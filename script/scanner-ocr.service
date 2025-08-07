@@ -1,0 +1,18 @@
+[Unit]
+Description=Scanner OCR service
+Documentation=Scanner OCR service
+
+[Service]
+Type=simple
+User=scanner
+TimeoutStartSec=0
+Restart=on-failure
+RestartSec=30s
+#ExecStartPre=
+ExecStart=/bin/bash -c '/home/scanner/script/scannerocr.sh   >> /home/scanner/outbox/ocr.log 2>&1'
+SyslogIdentifier=ScannerOCR
+#ExecStop=
+
+[Install]
+WantedBy=multi-user.target
+
