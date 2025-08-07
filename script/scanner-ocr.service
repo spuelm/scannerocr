@@ -9,7 +9,7 @@ TimeoutStartSec=0
 Restart=on-failure
 RestartSec=30s
 #ExecStartPre=
-ExecStart=/bin/bash -c '/home/scanner/script/scannerocr.sh   >> /home/scanner/outbox/ocr.log 2>&1'
+ExecStart=/bin/bash -c '/home/scanner/scannerocr/script/scannerocr.sh   >> /home/scanner/scannerocr/outbox/ocr.log 2>&1'
 SyslogIdentifier=ScannerOCR
 #ExecStop=
 

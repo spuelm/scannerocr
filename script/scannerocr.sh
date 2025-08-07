@@ -1,5 +1,5 @@
 #!/bin/bash
-SCANNER="/home/scanner/"
+SCANNER="/home/scanner/scannerocr/"
 SCANNER_INBOX="${SCANNER}inbox/"
 SCANNER_SHUFFLEBOX="${SCANNER}shufflebox/"
 SCANNER_OUTBOX="${SCANNER}outbox/"
@@ -47,7 +47,7 @@ echo "Start processing $(TRIGGERED_FILE)"
   for PDFFILE in $PDFFILES
   do
     if [ -f "${PDFFILE}" ]; then
-      python3 /home/scanner/script/pdfshuffler.py   "$PDFFILE" "${SCANNER_INBOX}"
+      python3 "${SCANNER}script/pdfshuffler.py"   "$PDFFILE" "${SCANNER_INBOX}"
     fi
   done
   #process pdf files in inbox/
