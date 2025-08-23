@@ -3,6 +3,7 @@ SCANNER="/home/scanner/scannerocr/"
 SCANNER_INBOX="${SCANNER}inbox/"
 SCANNER_SHUFFLEBOX="${SCANNER}shufflebox/"
 SCANNER_OUTBOX="${SCANNER}outbox/"
+#---------------------------------------------------------------------------------
 function process_file(){
   INPUTFILE="${1}"
   if [[ ${INPUTFILE}  ==  *.pdf ]]; then
@@ -32,7 +33,16 @@ echo "Version 1.3"
 echo "Wait for new file in ${SCANNER_INBOX}"
 echo "Write results to ${SCANNER_OUTBOX}"
 inotifywait -mq -e close_write  --format %w%f  "${SCANNER_INBOX}"  "${SCANNER_SHUFFLEBOX}" | while read -r TRIGGERED_FILE
-do  
+do  #- loop forever ........................................................
+echo "Mount $SCANNER_OUTBOX if not mounted"
+  if ! mountpoint -q "$SCANNER_OUTBOX"; then
+    echo "$SCANNER_OUTBOX not mounted. Mounting..."
+    sudo mount {${SCANNER_OUTBOX}}
+    if ! mountpoint -q "$SCANNER_OUTBOX"; then
+      echo "Failed to mount $SCANNER_OUTBOX. Exiting."
+      exit 1
+    fi
+  fi
 echo "Start processing $(TRIGGERED_FILE)"
   mv ${SCANNER_INBOX}*.oxps ${SCANNER_OUTBOX}
   mv ${SCANNER_INBOX}*.xps ${SCANNER_OUTBOX}
@@ -58,6 +68,9 @@ echo "Start processing $(TRIGGERED_FILE)"
       process_file "$PDFFILE"
     fi
   done
+  #unmount outbox
+  echo "Unmount $SCANNER_OUTBOX"
+  sudo umount "$SCANNER_OUTBOX" 
   echo "done. Waiting...."
 done
 
