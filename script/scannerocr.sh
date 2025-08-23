@@ -38,10 +38,6 @@ echo "Mount $SCANNER_OUTBOX if not mounted"
   if ! mountpoint -q "$SCANNER_OUTBOX"; then
     echo "$SCANNER_OUTBOX not mounted. Mounting..."
     sudo mount "$SCANNER_OUTBOX"
-    if ! mountpoint -q "$SCANNER_OUTBOX"; then
-      echo "Failed to mount $SCANNER_OUTBOX. Exiting."
-      exit 1
-    fi
   fi
 echo "Start processing $(TRIGGERED_FILE)"
   mv ${SCANNER_INBOX}*.oxps ${SCANNER_OUTBOX}
