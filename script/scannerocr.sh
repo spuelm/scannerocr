@@ -3,6 +3,7 @@ SCANNER="/home/scanner/scannerocr/"
 SCANNER_INBOX="${SCANNER}inbox/"
 SCANNER_SHUFFLEBOX="${SCANNER}shufflebox/"
 SCANNER_OUTBOX="${SCANNER}outbox/"
+SCANNER_MNT_TARGET="${SCANNER}outbox" # no backslash at the end!
 #---------------------------------------------------------------------------------
 function process_file(){
   INPUTFILE="${1}"
@@ -34,10 +35,10 @@ echo "Wait for new file in ${SCANNER_INBOX}"
 echo "Write results to ${SCANNER_OUTBOX}"
 inotifywait -mq -e close_write  --format %w%f  "${SCANNER_INBOX}"  "${SCANNER_SHUFFLEBOX}" | while read -r TRIGGERED_FILE
 do  #- loop forever ........................................................
-echo "Mount $SCANNER_OUTBOX if not mounted"
-  if ! mountpoint -q "$SCANNER_OUTBOX"; then
-    echo "$SCANNER_OUTBOX not mounted. Mounting..."
-    sudo mount "$SCANNER_OUTBOX"
+echo "Mount $SCANNER_MNT_TARGET if not mounted"
+  if ! mountpoint -q "$SCANNER_MNT_TARGET"; then
+    echo "$SCANNER_MNT_TARGET not mounted. Mounting..."
+    sudo mount "$SCANNER_MNT_TARGET"
   fi
 echo "Start processing $(TRIGGERED_FILE)"
   mv ${SCANNER_INBOX}*.oxps ${SCANNER_OUTBOX}
@@ -65,8 +66,8 @@ echo "Start processing $(TRIGGERED_FILE)"
     fi
   done
   #unmount outbox
-  echo "Unmount $SCANNER_OUTBOX"
-  sudo umount "$SCANNER_OUTBOX" 
+  echo "Unmount $SCANNER_MNT_TARGET"
+  sudo umount "$SCANNER_MNT_TARGET" 
   echo "done. Waiting...."
 done
 
