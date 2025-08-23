@@ -37,7 +37,7 @@ do  #- loop forever ........................................................
 echo "Mount $SCANNER_OUTBOX if not mounted"
   if ! mountpoint -q "$SCANNER_OUTBOX"; then
     echo "$SCANNER_OUTBOX not mounted. Mounting..."
-    sudo mount {${SCANNER_OUTBOX}}
+    sudo mount "$SCANNER_OUTBOX"
     if ! mountpoint -q "$SCANNER_OUTBOX"; then
       echo "Failed to mount $SCANNER_OUTBOX. Exiting."
       exit 1
